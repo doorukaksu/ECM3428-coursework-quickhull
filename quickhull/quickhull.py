@@ -6,3 +6,16 @@ Functions TO DO:
     - recursive find hull
     - main quickhull function to act as main entry point 
 """
+
+
+def find_side_of_line(p1, p2, p3):    
+    return
+
+def distance_from_line(p1, p2, p3):
+    return
+
+def find_hull(points, p1, p2):
+    return
+
+def quick_hull(points):
+    return
