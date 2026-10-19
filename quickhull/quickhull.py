@@ -6,7 +6,7 @@ Functions TO DO:
     - recursive find hull
     - main quickhull function to act as main entry point 
 """
-
+import math
 
 def find_side_of_line(p1, p2, p3):    
     return
@@ -14,8 +14,25 @@ def find_side_of_line(p1, p2, p3):
 def distance_from_line(p1, p2, p3):
     return
 
+def polygon_area(polygon):
+    n = len(polygon)
+    area = 0.0
+    for i in range(n):
+        x1, y1 = polygon[i]
+        x2, y2 = polygon[(i + 1) % n]
+        area += x1 * y2 - x2 * y1
+    return abs(area) / 2
+
+def perimeter(polygon):
+# Finds perimeter of polygon    
+    total = 0
+    for i in range(len(polygon)):
+        next = (i +1) % len(polygon)
+        total += math.dist(polygon[i], polygon[next])
+    return total
+
 def find_hull(points, p1, p2):
     return
 
-def quick_hull(points):
+def quickhull(points):
     return
