@@ -12,7 +12,13 @@ def find_side_of_line(p1, p2, p3):
     return (p2[0] - p1[0]) * (p3[1] - p1[1]) - ((p2[1] - p1[1]) * (p3[0] - p1[0]))
 
 def distance_from_line(p1, p2, p3):
-    return
+
+    side = find_side_of_line(p1, p2, p3)
+
+    if side < 0:
+        side = side * -1
+
+     return side/math.dist(p1, p2)
 
 def polygon_area(polygon):
     n = len(polygon)
