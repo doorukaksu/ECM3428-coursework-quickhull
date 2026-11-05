@@ -21,3 +21,44 @@ def test_distance_from_line():
     assert quickhull.distance_from_line((2, 5), (9, 5), (4, 3)) == 2 #below
 
     assert quickhull.distance_from_line((2, 5), (9, 5), (6, 5)) == 0 #on
+
+def test_polygon_area():
+
+    rectangle = [(0,0), (0,3), (4,3), (4,0)]
+
+    triangle = [(0,0), (0,3), (4,3)]
+
+    rectangle_alt = [(10, 10), (14, 10), (14, 13), (10, 13)]
+
+    triangle_alt = [(10, 10), (14, 10), (14, 13)]
+
+    assert quickhull.polygon_area(rectangle) == 12
+
+    assert quickhull.polygon_area(triangle) == 6
+
+    assert quickhull.polygon_area(rectangle_alt) == 12
+
+    assert quickhull.polygon_area(triangle_alt) == 6
+
+
+def test_perimeter_of_polygon():
+
+  rectangle = [(0,0), (0,3), (4,3), (4,0)]
+  
+  triangle = [(0,0), (0,3), (4,3)]
+  
+  rectangle_alt = [(10, 10), (14, 10), (14, 13), (10, 13)]
+  
+  triangle_alt = [(10, 10), (14, 10), (14, 13)]
+  
+  assert quickhull.perimeter(rectangle) == 14
+  
+  assert quickhull.perimeter(triangle) == 12
+  
+  assert quickhull.perimeter(rectangle_alt) == 14
+
+  assert quickhull.perimeter(triangle_alt) == 12
+
+
+
+
