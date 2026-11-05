@@ -1,7 +1,9 @@
 import pytest
 import quickhull
 
-#chosen base test points: (2, 5) and (9, 5)
+#chosen base test points: (2, 5) and (9, 5) 
+
+# (not completed yet)
 
 def test_find_side_of_line(): 
 
