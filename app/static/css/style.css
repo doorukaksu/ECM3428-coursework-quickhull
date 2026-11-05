@@ -1,0 +1,135 @@
+body {
+  margin: 0 auto;
+  padding: 24px 32px;
+  max-width: 1000px;
+  background: #ffffff;
+  color: #111111;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 600px) 300px;
+  grid-template-rows: auto auto auto auto auto 1fr; 
+  column-gap: 32px;
+  align-content: start;
+}
+
+
+h1,
+body > p {
+  grid-column: 1 / -1;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+
+body > p {
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #111111;
+}
+
+
+canvas {
+  grid-column: 1;
+  grid-row: 3 / span 4;
+  width: 100%;
+  height: auto;
+  border: 1px solid #111111;
+  cursor: crosshair;
+  background-color: #dce8cc;
+  background-image:
+    url("../trees.svg");
+  background-size: 10% 10%, 20% 20%;  
+}
+
+
+.controls {
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  gap: 8px;
+  align-self: start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #111111;
+}
+
+input,
+button {
+  padding: 5px 10px;
+  border: 1px solid #111111;
+  border-radius: 0;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+}
+
+input {
+  width: 70px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e6e6e6;
+}
+
+.scenarios {
+  grid-column: 2;
+  grid-row: 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 0 16px;
+  border-bottom: 1px solid #111111;
+}
+
+.scenarios h2 {
+  width: 100%;
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+#scenario-note {
+  width: 100%;
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #444444;
+}
+
+.stats {
+  grid-column: 2;
+  grid-row: 5;
+  align-self: start;
+}
+
+.stats span {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #cccccc;
+}
+
+@media (max-width: 860px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    padding: 16px;
+  }
+
+  canvas,
+  .controls,
+  .scenarios,
+  .stats {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .controls {
+    margin-top: 16px;
+  }
+}

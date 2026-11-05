@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+
+  <defs>
+    <g id="tree">
+      <rect x="-1" y="5" width="2" height="4" fill="#6b5a3e"/>
+      <polygon points="0,-8 6,5 -6,5" fill="#7fa86a"/>
+    </g>
+  </defs>
+  <use href="#tree" x="14" y="16"/>
+  <use href="#tree" x="52" y="10"/>
+  <use href="#tree" x="92" y="22"/>
+  <use href="#tree" x="30" y="46"/>
+  <use href="#tree" x="74" y="52"/>
+  <use href="#tree" x="108" y="64"/>
+  <use href="#tree" x="10" y="78"/>
+  <use href="#tree" x="48" y="86"/>
+  <use href="#tree" x="88" y="96"/>
+  <use href="#tree" x="24" y="110"/>
+  <use href="#tree" x="64" y="114"/>
+</svg>
