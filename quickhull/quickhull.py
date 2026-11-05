@@ -1,11 +1,3 @@
-"""
-Functions TO DO:
-    - which side a line point p is on (returns >0 if point is to the left of line <0 if to the right of line and =0 if on the line)     >    USE VECTOR CROSS PRODUCT 
-    - how far is point p from the line (returns absolute value of distance)    >    ^^^^^^^^^^^^^^^^^^^^^^^^
-    
-    - recursive find hull DONE
-    - main quickhull function to act as main entry point DONE
-"""
 import math
 
 def find_side_of_line(p1, p2, p3):    
@@ -19,6 +11,11 @@ def distance_from_line(p1, p2, p3):
         side = side * -1
 
     return side/math.dist(p1, p2)
+
+def distance_along_line(p1, p2, p3):
+    
+    return (p3[0] - p1[0]) * (p2[0] - p1[0]) + (p3[1] - p1[1]) * (p2[1] - p1[1])
+
 
 def polygon_area(polygon):
     n = len(polygon)
@@ -40,7 +37,7 @@ def perimeter(polygon):
 def find_hull(points, p1, p2):
     if not points:
         return []
-    farthest = max(points, key=lambda p: distance_from_line(p1, p2, p))
+    farthest = max(points, key=lambda p: (distance_from_line(p1, p2, p), distance_along_line(p1, p2, p)))
 
     left_points = [p for p in points if find_side_of_line(p1, farthest, p) < 0]
     right_points = [p for p in points if find_side_of_line(farthest, p2, p) < 0]

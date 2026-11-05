@@ -2,6 +2,7 @@ import math
 from flask import *
 from quickhull.quickhull import *
 MAX_POINTS = 50000
+
 def App():
     app = Flask(__name__)
     

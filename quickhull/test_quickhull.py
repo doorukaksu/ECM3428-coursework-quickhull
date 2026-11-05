@@ -1,5 +1,5 @@
 import pytest
-import quickhull
+from quickhull import quickhull
 
 #chosen base test points: (2, 5) and (9, 5) 
 
