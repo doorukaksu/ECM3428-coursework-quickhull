@@ -37,7 +37,7 @@ python run.py
 
 ## Contributions
 
-Backend - Doruk & Sidhant
+Backend - Doruk & Siddhant
 FrontEnd - Doruk
 API - Doruk
-Testing - Sidhant
+Testing - Siddhant
