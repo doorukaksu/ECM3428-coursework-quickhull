@@ -41,3 +41,6 @@ Backend - Doruk & Siddhant
 FrontEnd - Doruk
 API - Doruk
 Testing - Siddhant
+
+## Live link
+https://ecm3428-live-bfxdwcgd0-doorukaksus-projects.vercel.app/
