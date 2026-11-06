@@ -17,7 +17,17 @@ The algorithm uses fire sensors scattered throughout the forest to identify whic
 | Best / average (balanced splits)  | O(n log n) | O(n)  |
 | Worst (unbalanced splits)         | O(n²)      | O(n²) |
 
-## Installation
+## Live link
+https://ecm3428-live.vercel.app/
+
+## How to use
+Click the live link above to be taken straight to the live domain where the app is deployed.
+
+To use the forest fire board, simply click any multiple points on the forest to start a fire and observe the quickhull algorithm calculating the smallest containment area.
+
+To see prepared scenarios, click on the desired scenario on the right or generate a number of random points using the random point generator.
+
+## Local Installation
 
 ```bash
 git clone https://github.com/doorukaksu/ECM3428-coursework-quickhull.git
@@ -27,7 +37,7 @@ source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Local Usage
 
 ```bash
 python run.py
@@ -41,6 +51,5 @@ Backend - Doruk & Siddhant
 FrontEnd - Doruk
 API - Doruk
 Testing - Siddhant
+ReadME - Doruk & Siddhant
 
-## Live link
-https://ecm3428-live-bfxdwcgd0-doorukaksus-projects.vercel.app/
