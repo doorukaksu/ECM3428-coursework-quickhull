@@ -1,5 +1,5 @@
 import pytest
-from quickhull import quickhull
+import quickhull
 
 def test_find_side_of_line(): 
 
