@@ -56,25 +56,6 @@ def test_perimeter_of_polygon():
   assert quickhull.perimeter(triangle_alt) == 12
 
 
-def test_perimeter_of_polygon():
-
-  rectangle = [(0,0), (0,3), (4,3), (4,0)]
-  
-  triangle = [(0,0), (0,3), (4,3)]
-  
-  rectangle_alt = [(10, 10), (14, 10), (14, 13), (10, 13)]
-  
-  triangle_alt = [(10, 10), (14, 10), (14, 13)]
-  
-  assert quickhull.perimeter(rectangle) == 14
-  
-  assert quickhull.perimeter(triangle) == 12
-  
-  assert quickhull.perimeter(rectangle_alt) == 14
-
-  assert quickhull.perimeter(triangle_alt) == 12
-
-
 def test_find_hull():
 
     assert quickhull.find_hull([], (0, 0), (10, 0)) == []
