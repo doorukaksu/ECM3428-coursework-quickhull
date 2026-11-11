@@ -58,6 +58,7 @@ Three cases are tested:
 This verifies that the function correctly identifies all three possible point positions.
 
 
+
 2. test_distance_from_line() : Tests the distance_from_line() function, which calculates the perpendicular distance between a point and a line.
 
 Three cases are tested:
@@ -65,6 +66,7 @@ Three cases are tested:
 - A point below the line with an expected distance of 2.
 - A point directly on the line with an expected distance of 0.
 This checks that the function returns positive distances regardless of which side of the line the point occupies, and correctly handles points lying on the line.
+
 
 
 3. test_polygon_area() : Tests the polygon_area() function using rectangles and triangles.
@@ -77,6 +79,7 @@ Four cases are tested:
 The alternative shapes verify that translating a polygon does not affect its calculated area.
 
 
+
 4. test_perimeter_of_polygon() : Tests the perimeter() function by calculating the total boundary length of rectangles and triangles.
 
 Four cases are tested:
@@ -85,6 +88,7 @@ Four cases are tested:
 - An alternative rectangle with an expected perimeter of 14.
 - An alternative triangle with an expected perimeter of 12.
 This verifies that the function correctly sums the distances between consecutive vertices, including the final edge connecting the last vertex back to the first.
+
 
 
 5. test_find_hull() : Tests the recursive find_hull() function, which identifies the points forming part of the convex hull between two endpoints.
@@ -96,6 +100,7 @@ Three cases are tested:
 The empty-list case checks an important edge condition, while the final case verifies that the recursive algorithm correctly identifies the farthest points and excludes points that do not contribute to the hull.
 
 
+
 6. test_quickhull() : Tests the main quickhull() function, which constructs the complete convex hull from a collection of input points.
 
 Three cases are tested:
@@ -103,6 +108,7 @@ Three cases are tested:
 - A collection of five points, where the algorithm should identify the four outer vertices and exclude the interior point.
 - A similar collection containing a duplicate point, verifying that duplicate coordinates are removed without affecting the resulting convex hull.
 The final case is particularly useful for checking how the algorithm handles duplicate input coordinates.
+
 
 # Outcome Summary
 All test functions passed successfully when executed using pytest, which indicates that the tested geometric helper functions, polygon calculations, recursive hull construction and the main Quickhull implementation produced the expected results across the selected test cases. The tests also covered several edge cases such as empty input, single-point input, duplicate coordinates and points lying directly on a line.
