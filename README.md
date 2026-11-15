@@ -2,7 +2,14 @@
 GEOSPATIAL BOUNDARY MAPPER TO AID CONTAINING FOREST FIRES
 Chosen Algorithm: Quickhull
 
-## Motivation and Usecases
+
+## How the algorithm works
+
+Quickhull finds the convex hull, the smallest convex polygon that encloses every point. For the fire map, that polygon is the shortest closed containment line around all the sensors reporting fire.
+
+The algorithm divides and conquers. The leftmost and rightmost points must be on the hull, so the line between them splits the points into an upper and a lower set. In each set, the point farthest from the line must also be on the hull. Any point inside the triangle formed by the line's two ends and that farthest point cannot be on the hull, so it is discarded. The same step then repeats on the two new edges of the triangle until no points remain outside.
+
+## Motivation and Use cases
 
 The product is for use by emergency responders to be able to contain a forest fire quickly and effectively.
 
@@ -115,9 +122,41 @@ All test functions passed successfully when executed using pytest, which indicat
 
 ## Contributions
 
-Backend - Doruk & Siddhant
-FrontEnd - Doruk
-API - Doruk
-Testing - Siddhant
-ReadME - Doruk & Siddhant
+| Area | Contributors |
+|---|---|
+| Core Algorithm | Doruk & Siddhant|
+| API | Doruk |
+| Frontend | Doruk |
+| Testing | Siddhant |
+| ReadME | Doruk & Siddhant |
+| Presentation | Doruk & Siddhant |
 
+## Use of generative AI
+
+We used Claude (Anthropic, Claude Opus 5.5 through the Claude app) during November 2026. We take full responsibility for all submitted work, and every team member can explain every part of the code.
+
+### What it was used for
+
+| Area | How AI contributed |
+|---|---|
+| Code review | Assessed the repository against the marking criteria and suggested a prioritised list of improvements |
+| Tie break bug | Generated random tests that exposed tied farthest points being reported as hull corners, and proposed a fix |
+| Frontend styling | Drafted `flame.svg` & `trees.svg` and small colour changes in `main.js` |
+| Test scenario buttons | Generated relevant and interesting scenarios for use in the product |
+| Deployment and setup | Suggested `pyproject.toml` for the Vercel entrypoint error|
+| Presentation | Suggested layout and generated graphs & visuals |
+
+The core algorithm in `quickhull.py`, the Flask API and the original frontend were written by the team before AI was used.
+
+### Representative prompts
+
+1. "Assess the source code against the marking criteria."
+2. "Generate interesting test cases that can be activated using buttons in the frontend."
+3. " [pasted build log error] identify what is causing this error with vercel deployment and suggest a viable fix"
+
+### How we checked the output
+
+1. We asked for the reasoning behind every change before applying it.
+2. We ran the test suite with `python -m pytest` after each change to the algorithm.
+3. We tested every scenario button in the browser and compared the results with values we could calculate by hand: 2 vertices and 0 ha for the collinear road, 72 vertices for the ring, and 4 vertices, 3,600 ha and 24 km for the square.
+4. We checked the deployed site after each deployment.
