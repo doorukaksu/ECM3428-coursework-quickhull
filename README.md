@@ -128,6 +128,41 @@ Three cases are tested:
 - A similar collection containing a duplicate point, verifying that duplicate coordinates are removed without affecting the resulting convex hull.
 The final case is particularly useful for checking how the algorithm handles duplicate input coordinates.
 
+7. test_tied_farthest_points() : Tests that quickhull() handles several points that are equally far from the dividing line.
+
+One case is tested:
+* Three points, (4, 5), (5, 5) and (6, 5), all lie at the same distance from the line between (0, 0) and (10, 0). The hull should contain only the two outer points of that edge, (4, 5) and (6, 5), together with (0, 0) and (10, 0).
+This is a regression test for a bug found during development: before the tie break was added to find_hull(), the middle point (5, 5) could be chosen as the farthest point and wrongly reported as a corner of the hull. The distance_along_line() tie break now always selects an end of the edge.
+
+
+
+8. test_negative_coordinates_and_input_order() : Tests quickhull() with negative coordinates and with the input given in a different order.
+
+Two cases are tested:
+* A square with corners at (±5, ±5) and two interior points, which should return only the four corners.
+* The same points in reverse order, which should return exactly the same hull in the same order.
+This verifies that the side of line calculations work across all four quadrants, and that the result depends only on the set of points, not on the order in which they are given.
+
+
+
+9. test_empty_and_single_point() : Tests quickhull() with inputs too small to form a polygon.
+
+Three cases are tested:
+* An empty list, which should return an empty list.
+* A single point, which should be returned on its own.
+* The same point repeated three times, which should be reduced to that single point once duplicates are removed.
+These edge cases check that the algorithm returns early without errors, rather than trying to find the leftmost and rightmost points of an empty or single point set.
+
+
+
+10. test_collinear_points() : Tests quickhull() when every point lies on one straight line.
+
+Four cases are tested:
+* Horizontal points, which should return only the two end points.
+* Vertical points, which should return only the lowest and highest points. All these points share the same x value, so this checks that ties between the leftmost and rightmost points are broken correctly.
+* Ten diagonal points on the line y = 2x + 1, which should return only the two end points.
+* The area of the diagonal result, which should be 0.
+Collinear data is one of the dataset
 
 # Outcome Summary
 All test functions passed successfully when executed using pytest, which indicates that the tested geometric helper functions, polygon calculations, recursive hull construction and the main Quickhull implementation produced the expected results across the selected test cases. The tests also covered several edge cases such as empty input, single-point input, duplicate coordinates and points lying directly on a line.

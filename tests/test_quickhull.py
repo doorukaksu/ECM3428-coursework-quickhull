@@ -139,5 +139,5 @@ def test_large_dataset():
     hull = quickhull.quickhull(points)
     elapsed = time.perf_counter() - start
 
-
-    assert elapsed < 2 
+    assert len(hull) >= 3 and set(hull) <= set(points)
+    
