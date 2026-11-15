@@ -16,6 +16,18 @@ The product is for use by emergency responders to be able to contain a forest fi
 As it stands it is difficult to visualise the most effective way to contain a forest fire without sacrificing a portion of the forest, which with this algorithm is minimised significantly.
 
 The algorithm uses fire sensors scattered throughout the forest to identify which 'chunks' of the forest is affected by the fire. These sensors report their coordinates, which are then used to find the minimum area required to contain all of the fire.
+## Limitations
+
+1. **Concave and split fires.** A convex hull cannot bend inwards. For a crescent shaped fire, or two separate fires, the line closes the gaps and encloses forest that is not burning, so crews could clear more than they need to. The "Crescent shaped fire" and "Two separate fires" scenarios show this.
+2. **Sensor coverage and reliability.** The line can only be as good as the sensor data. A failed or missing sensor pulls the line inwards and could leave part of the fire outside it; a false alarm pushes it outwards.
+3. **Recursion depth.** `find_hull` is recursive. In the worst case the recursion goes n levels deep, so unusual inputs could reach Python's default limit of about 1,000 calls. Random and clustered data stay far below this.
+4. **Map scale.** The map is a 100 by 100 grid with no real geographic coordinates. A real deployment would need GPS positions and a map projection.
+
+## Dependencies and third party resources
+
+1. **Python 3.12 or later**, with **Flask** for the web server and **pytest** for testing (see `requirements.txt`).
+2. **Vercel** hosts the live deployment.
+3. The browser frontend uses only standard HTML, CSS and JavaScript, with no external libraries.
 
 ## Complexities
 
@@ -127,7 +139,7 @@ All test functions passed successfully when executed using pytest, which indicat
 | Core Algorithm | Doruk & Siddhant|
 | API | Doruk |
 | Frontend | Doruk |
-| Testing | Siddhant |
+| Testing | Siddhant & Doruk|
 | ReadME | Doruk & Siddhant |
 | Presentation | Doruk & Siddhant |
 
