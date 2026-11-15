@@ -154,15 +154,30 @@ Three cases are tested:
 These edge cases check that the algorithm returns early without errors, rather than trying to find the leftmost and rightmost points of an empty or single point set.
 
 
+10. **test_collinear_points()** tests `quickhull()` when every point lies on one straight line.
+    Four cases are tested:
+    * Horizontal points, which should return only the two end points.
+    * Vertical points, which should return only the lowest and highest points. All these points share the same x value, so this checks that ties between the leftmost and rightmost points are broken correctly.
+    * Ten diagonal points on the line y = 2x + 1, which should return only the two end points.
+    * The area of the diagonal result, which should be 0.
+    Collinear data is one of the dataset types named in the specification. It matches the "Sensors along a road" scenario in the product, where the containment line has two vertices and no area.
 
-10. test_collinear_points() : Tests quickhull() when every point lies on one straight line.
 
-Four cases are tested:
-* Horizontal points, which should return only the two end points.
-* Vertical points, which should return only the lowest and highest points. All these points share the same x value, so this checks that ties between the leftmost and rightmost points are broken correctly.
-* Ten diagonal points on the line y = 2x + 1, which should return only the two end points.
-* The area of the diagonal result, which should be 0.
-Collinear data is one of the dataset
+
+11. **test_points_on_edges_are_not_vertices()** tests that points lying exactly on a hull edge are excluded from the hull.
+    Three checks are made on a 10 by 10 square with points at its four corners, at the midpoint of each edge, and inside it:
+    * The hull should contain only the four corners.
+    * The area should be 100.
+    * The perimeter should be 40.
+    Because `quickhull()` keeps only points strictly outside each line, edge midpoints are not vertices. This matches the "Known answer square" scenario in the product, whose results can be checked by hand.
+
+
+    
+12. **test_large_dataset()** tests `quickhull()` on a large input.
+    One case is tested:
+    * 50,000 random points, the maximum the API accepts. The result should be a valid polygon with at least three vertices, all of which are input points.
+    A fixed random seed (42) makes the test reproducible. The test also measures how long the hull takes to compute; this time is recorded rather than asserted, so that the test does not fail on slower machines. On our machines it completes in a fraction of a second. This gives evidence that the implementation handles the largest input the product allows.
+
 
 # Outcome Summary
 All test functions passed successfully when executed using pytest, which indicates that the tested geometric helper functions, polygon calculations, recursive hull construction and the main Quickhull implementation produced the expected results across the selected test cases. The tests also covered several edge cases such as empty input, single-point input, duplicate coordinates and points lying directly on a line.
