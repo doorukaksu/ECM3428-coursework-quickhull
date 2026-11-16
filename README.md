@@ -1,5 +1,5 @@
 # ECM3428-coursework-quickhull
-GEOSPATIAL BOUNDARY MAPPER TO AID CONTAINING FOREST FIRES
+Forest Fire Containment Mapper
 Chosen Algorithm: Quickhull
 
 
@@ -36,6 +36,31 @@ The algorithm uses fire sensors scattered throughout the forest to identify whic
 | Best / average (balanced splits)  | O(n log n) | O(n)  |
 | Worst (unbalanced splits)         | O(n²)      | O(n²) |
 
+## Performance and comparison with a baseline
+
+We compared our Quickhull with Andrew's monotone chain algorithm (A. M. Andrew, 1979), a different convex hull algorithm that sorts the points and builds the hull with a stack. The baseline is in `quickhull/baseline.py`, and the timings come from `benchmark.py`, which reports the median of 5 runs. Run it from the project root with:
+
+```bash
+python benchmark.py
+```
+
+| Points | Quickhull, random | Baseline, random | Quickhull, circle | Baseline, circle |
+|---|---|---|---|---|
+| 1,000 | 2.0 ms | 1.3 ms | 9.5 ms | 1.0 ms |
+| 5,000 | 10.5 ms | 7.3 ms | 61.1 ms | 5.8 ms |
+| 10,000 | 19.2 ms | 14.9 ms | 131.5 ms | 12.4 ms |
+| 50,000 | 155.8 ms | 99.5 ms | 816.2 ms | 62.3 ms |
+
+**Correctness.** `test_matches_baseline` checks that both algorithms return exactly the same hull for 300 random datasets.
+
+**Scaling.** For random points, multiplying the number of points by 50 (from 1,000 to 50,000) multiplied the time by about 78. That matches the factor of about 78 predicted by O(n log n) almost exactly, and is far below the factor of 2,500 that O(n²) would give. Points on a circle scale in a similar way, with a factor of about 86.
+
+**Quickhull against the baseline.** On random points, Quickhull took between 1.3 and 1.6 times as long as the baseline. Both algorithms are O(n log n) on this data, so the difference is a constant factor. Most of the baseline's work is Python's built in `sorted`, which is written in C, while all of Quickhull's work happens in Python, where each point passes through several function calls in every call to `find_hull`.
+
+**Points on a circle.** When every point lies on the hull, Quickhull was 5 to 7 times slower than on random data, and 10 to 13 times slower than the baseline. Nothing can be discarded in this case, so `find_hull` is called once for every point. For random points, most points fall inside the first few triangles and are discarded early. The baseline was slightly faster on the circle than on random data, because the circle points are generated in order around the circle, and Python's sort is faster on data that is already partly in order.
+
+**What this means for the product.** For a forest fire, only a few sensors lie on the containment line compared with the number reporting fire. This is the favourable case for Quickhull, and even with 50,000 sensors the hull takes well under a second.
+
 ## Live link
 https://ecm3428-live.vercel.app/
 
@@ -66,9 +91,11 @@ python run.py
 
 ## Testing
 
+Run the tests from the project root with `python -m pytest`
+
 test_quickhull.py is dedicated for testing the functions written in quickhull.py . A number of cases are tested for each function:
 
-1. test_find_side_of_line() : Tests the find_side_of_line() function, which determines the position of a point relative to a directed line.
+1. **test_find_side_of_line()** : Tests the find_side_of_line() function, which determines the position of a point relative to a directed line.
 
 Three cases are tested:
 - A point above the horizontal line, which should return a positive value (left side).
@@ -78,7 +105,7 @@ This verifies that the function correctly identifies all three possible point po
 
 
 
-2. test_distance_from_line() : Tests the distance_from_line() function, which calculates the perpendicular distance between a point and a line.
+2. **test_distance_from_line()** : Tests the distance_from_line() function, which calculates the perpendicular distance between a point and a line.
 
 Three cases are tested:
 - A point above the line with an expected distance of 4.
@@ -88,7 +115,7 @@ This checks that the function returns positive distances regardless of which sid
 
 
 
-3. test_polygon_area() : Tests the polygon_area() function using rectangles and triangles.
+3. **test_polygon_area()** : Tests the polygon_area() function using rectangles and triangles.
 
 Four cases are tested:
 - A rectangle with an area of 12.
@@ -99,7 +126,7 @@ The alternative shapes verify that translating a polygon does not affect its cal
 
 
 
-4. test_perimeter_of_polygon() : Tests the perimeter() function by calculating the total boundary length of rectangles and triangles.
+4. **test_perimeter_of_polygon()** : Tests the perimeter() function by calculating the total boundary length of rectangles and triangles.
 
 Four cases are tested:
 - A rectangle with an expected perimeter of 14.
@@ -110,7 +137,7 @@ This verifies that the function correctly sums the distances between consecutive
 
 
 
-5. test_find_hull() : Tests the recursive find_hull() function, which identifies the points forming part of the convex hull between two endpoints.
+5. **test_find_hull()** : Tests the recursive find_hull() function, which identifies the points forming part of the convex hull between two endpoints.
 
 Three cases are tested:
 - An empty list of points, which should return an empty list.
@@ -120,7 +147,7 @@ The empty-list case checks an important edge condition, while the final case ver
 
 
 
-6. test_quickhull() : Tests the main quickhull() function, which constructs the complete convex hull from a collection of input points.
+6. **test_quickhull()** : Tests the main quickhull() function, which constructs the complete convex hull from a collection of input points.
 
 Three cases are tested:
 - A set containing only two points, verifying that small input sets are handled correctly.
@@ -128,59 +155,68 @@ Three cases are tested:
 - A similar collection containing a duplicate point, verifying that duplicate coordinates are removed without affecting the resulting convex hull.
 The final case is particularly useful for checking how the algorithm handles duplicate input coordinates.
 
-7. test_tied_farthest_points() : Tests that quickhull() handles several points that are equally far from the dividing line.
+7. **test_tied_farthest_points()** : Tests that quickhull() handles several points that are equally far from the dividing line.
 
 One case is tested:
-* Three points, (4, 5), (5, 5) and (6, 5), all lie at the same distance from the line between (0, 0) and (10, 0). The hull should contain only the two outer points of that edge, (4, 5) and (6, 5), together with (0, 0) and (10, 0).
+- Three points, (4, 5), (5, 5) and (6, 5), all lie at the same distance from the line between (0, 0) and (10, 0). The hull should contain only the two outer points of that edge, (4, 5) and (6, 5), together with (0, 0) and (10, 0).
 This is a regression test for a bug found during development: before the tie break was added to find_hull(), the middle point (5, 5) could be chosen as the farthest point and wrongly reported as a corner of the hull. The distance_along_line() tie break now always selects an end of the edge.
 
 
 
-8. test_negative_coordinates_and_input_order() : Tests quickhull() with negative coordinates and with the input given in a different order.
+8. **test_negative_coordinates_and_input_order()** : Tests quickhull() with negative coordinates and with the input given in a different order.
 
 Two cases are tested:
-* A square with corners at (±5, ±5) and two interior points, which should return only the four corners.
-* The same points in reverse order, which should return exactly the same hull in the same order.
+- A square with corners at (±5, ±5) and two interior points, which should return only the four corners.
+- The same points in reverse order, which should return exactly the same hull in the same order.
 This verifies that the side of line calculations work across all four quadrants, and that the result depends only on the set of points, not on the order in which they are given.
 
 
 
-9. test_empty_and_single_point() : Tests quickhull() with inputs too small to form a polygon.
+9. **test_empty_and_single_point()** : Tests quickhull() with inputs too small to form a polygon.
 
 Three cases are tested:
-* An empty list, which should return an empty list.
-* A single point, which should be returned on its own.
-* The same point repeated three times, which should be reduced to that single point once duplicates are removed.
+- An empty list, which should return an empty list.
+- A single point, which should be returned on its own.
+- The same point repeated three times, which should be reduced to that single point once duplicates are removed.
 These edge cases check that the algorithm returns early without errors, rather than trying to find the leftmost and rightmost points of an empty or single point set.
 
 
 10. **test_collinear_points()** tests `quickhull()` when every point lies on one straight line.
     Four cases are tested:
-    * Horizontal points, which should return only the two end points.
-    * Vertical points, which should return only the lowest and highest points. All these points share the same x value, so this checks that ties between the leftmost and rightmost points are broken correctly.
-    * Ten diagonal points on the line y = 2x + 1, which should return only the two end points.
-    * The area of the diagonal result, which should be 0.
+    - Horizontal points, which should return only the two end points.
+    - Vertical points, which should return only the lowest and highest points. All these points share the same x value, so this checks that ties between the leftmost and rightmost points are broken correctly.
+    - Ten diagonal points on the line y = 2x + 1, which should return only the two end points.
+    - The area of the diagonal result, which should be 0.
     Collinear data is one of the dataset types named in the specification. It matches the "Sensors along a road" scenario in the product, where the containment line has two vertices and no area.
 
 
 
 11. **test_points_on_edges_are_not_vertices()** tests that points lying exactly on a hull edge are excluded from the hull.
     Three checks are made on a 10 by 10 square with points at its four corners, at the midpoint of each edge, and inside it:
-    * The hull should contain only the four corners.
-    * The area should be 100.
-    * The perimeter should be 40.
+    - The hull should contain only the four corners.
+    - The area should be 100.
+    - The perimeter should be 40.
     Because `quickhull()` keeps only points strictly outside each line, edge midpoints are not vertices. This matches the "Known answer square" scenario in the product, whose results can be checked by hand.
 
 
     
 12. **test_large_dataset()** tests `quickhull()` on a large input.
     One case is tested:
-    * 50,000 random points, the maximum the API accepts. The result should be a valid polygon with at least three vertices, all of which are input points.
+    - 50,000 random points, the maximum the API accepts. The result should be a valid polygon with at least three vertices, all of which are input points.
     A fixed random seed (42) makes the test reproducible. The test also measures how long the hull takes to compute; this time is recorded rather than asserted, so that the test does not fail on slower machines. On our machines it completes in a fraction of a second. This gives evidence that the implementation handles the largest input the product allows.
+
+13. **test_matches_baseline()** compares `quickhull()` with an independent convex hull algorithm.
+
+    Three kinds of data are generated for each of 100 random seeds, giving 300 datasets of 200 points each:
+    - Uniform random points.
+    - Points on a small 11 by 11 grid, which produces many duplicates and collinear points.
+    - Clustered points around one centre, like sensors around a single fire.
+
+    For every dataset, the hull from `quickhull()` must be identical to the hull from Andrew's monotone chain in `quickhull/baseline.py`. Because the two algorithms work in completely different ways, agreement on 300 datasets is strong evidence that the implementation is correct. This test also catches the tied farthest point bug: with the tie break removed, it fails on the grid data.
 
 
 # Outcome Summary
-All test functions passed successfully when executed using pytest, which indicates that the tested geometric helper functions, polygon calculations, recursive hull construction and the main Quickhull implementation produced the expected results across the selected test cases. The tests also covered several edge cases such as empty input, single-point input, duplicate coordinates and points lying directly on a line.
+All 13 test functions pass when run with `python -m pytest`. This indicates that the geometric helper functions, polygon calculations, recursive hull construction and the main Quickhull implementation produce the expected results. The tests cover empty and single point input, duplicate coordinates, collinear data, points on hull edges, negative coordinates, tied farthest points, a dataset of 50,000 points, and agreement with an independent baseline algorithm on 300 random datasets.
 
 ## Contributions
 
@@ -207,6 +243,7 @@ We used Claude (Anthropic, Claude Opus 5.5 through the Claude app) during Novemb
 | Test scenario buttons | Generated relevant and interesting scenarios for use in the product |
 | Deployment and setup | Suggested `pyproject.toml` for the Vercel entrypoint error|
 | Presentation | Suggested layout and generated graphs & visuals |
+| Monotone Chain Development | Assisted in the development of the monotone chain as a benchmark to compare our algorithm to |
 
 The core algorithm in `quickhull.py`, the Flask API and the original frontend were written by the team before AI was used.
 

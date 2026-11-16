@@ -3,6 +3,7 @@ import math
 import random
 import time
 from quickhull import quickhull
+import benchmark
 
 def test_find_side_of_line(): 
 
@@ -141,3 +142,15 @@ def test_large_dataset():
 
     assert len(hull) >= 3 and set(hull) <= set(points)
     
+
+
+def test_matches_baseline():
+
+    for seed in range(100):
+        rng = random.Random(seed)
+        uniform = [(rng.uniform(0, 100), rng.uniform(0, 100)) for _ in range(200)]
+        grid = [(rng.randint(0, 10), rng.randint(0, 10)) for _ in range(200)]
+        clustered = [(rng.gauss(50, 5), rng.gauss(50, 5)) for _ in range(200)]
+
+        for points in (uniform, grid, clustered):
+            assert quickhull.quickhull(points) == benchmark.monotone_chain(points)
